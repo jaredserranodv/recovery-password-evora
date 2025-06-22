@@ -2,42 +2,51 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Restablecer Contraseña</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Alata&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <h1>Restablecer Contraseña</h1>
-  <form id="resetForm">
-    <input type="password" id="newPassword" placeholder="Nueva contraseña" required />
-    <button type="submit">Cambiar contraseña</button>
-  </form>
+  <div class="container">
+    <h2 class="logo">EVORA</h2>
+    <h1>Restablecer Contraseña</h1>
+    <form id="resetForm">
+      <input type="password" id="newPassword" placeholder="Nueva contraseña" required />
+      <button type="submit">Cambiar contraseña</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Inicializa Supabase
     const supabaseUrl = 'https://digusrmzvsiyewvbiwth.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZ3Vzcm16dnNpeWV3dmJpd3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzODYyODQsImV4cCI6MjA2NTk2MjI4NH0.5ew8mHnyEEHnVrQY6Yz31BQstQcc_YCude2dCBWrwRU';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Obtén el token de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const access_token = urlParams.get('access_token');
 
     const form = document.getElementById('resetForm');
+    const messageBox = document.getElementById('message');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const newPassword = document.getElementById('newPassword').value;
 
-      // Actualiza la contraseña usando el token
-      const { data, error } = await supabase.auth.updateUser({
+      const { error } = await supabase.auth.updateUser({
         password: newPassword
       }, { accessToken: access_token });
 
       if (error) {
-        alert('Error: ' + error.message);
+        messageBox.textContent = 'Error: ' + error.message;
+        messageBox.style.color = '#e63946';
       } else {
-        alert('Contraseña actualizada correctamente.');
-        // Redirigir a login o home
-        window.location.href = '/';
+        messageBox.style.color = '#2a9d8f';
+        messageBox.textContent = 'Contraseña actualizada correctamente. Redirigiendo...';
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
       }
     });
   </script>

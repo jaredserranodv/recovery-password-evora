@@ -1,0 +1,84 @@
+* {
+    box-sizing: border-box;
+  }
+
+  .logo {
+    font-family: 'Alata', sans-serif;
+    font-size: 3.75rem; 
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    color: #222;
+  }
+  
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  input[type="password"]:focus {
+    border-color: #0077ff;
+    outline: none;
+  }
+  
+  button {
+    background-color: #0077ff;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #005fd1;
+  }
+  
+  .message {
+    margin-top: 15px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      margin: 20px;
+      padding: 30px 20px;
+    }
+  }
+  
