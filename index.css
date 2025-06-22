@@ -1,84 +1,132 @@
-* {
-    box-sizing: border-box;
+/* Reset */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f4f6f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  font-family: 'Alata', sans-serif;
+  font-size: 3.75rem;
+  letter-spacing: 0.5px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+form { text-align: left; }
+
+.password-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  border-color: #0077ff;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #005fd1;
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+/* Toggle visibility icon */
+.toggle-visibility {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.toggle-visibility:hover {
+  color: #0056b3;
+}
+
+.toggle-visibility svg {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+
+.toggle-visibility .eye-open {
+  opacity: 1;
+}
+
+.toggle-visibility.password-visible .eye-open {
+  opacity: 0;
+}
+
+.toggle-visibility.password-visible .eye-closed {
+  opacity: 1;
+}
+
+.error-message {
+    color: #e63946;
+    font-size: 0.875rem;
+    margin-top: 4px;
+    min-height: 1em; /* reserva espacio aunque no haya texto */
   }
 
-  .logo {
-    font-family: 'Alata', sans-serif;
-    font-size: 3.75rem; 
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-    color: #222;
-  }
-  
-  
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: #f4f6f8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
+@media (max-width: 480px) {
   .container {
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+    margin: 20px;
+    padding: 30px 20px;
   }
-  
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-  }
-  
-  input[type="password"]:focus {
-    border-color: #0077ff;
-    outline: none;
-  }
-  
-  button {
-    background-color: #0077ff;
-    color: white;
-    padding: 12px;
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  button:hover {
-    background-color: #005fd1;
-  }
-  
-  .message {
-    margin-top: 15px;
-    font-size: 0.95rem;
-  }
-  
-  @media (max-width: 480px) {
-    .container {
-      margin: 20px;
-      padding: 30px 20px;
-    }
-  }
-  
+}

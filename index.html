@@ -2,53 +2,161 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Restablecer Contraseña</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Alata&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Alata&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="index.css" />
 </head>
 <body>
   <div class="container">
     <h2 class="logo">EVORA</h2>
     <h1>Restablecer Contraseña</h1>
-    <form id="resetForm">
-      <input type="password" id="newPassword" placeholder="Nueva contraseña" required />
+
+    <form id="resetForm" novalidate>
+      <!-- Nueva contraseña -->
+      <div class="password-wrapper">
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Nueva contraseña"
+          required
+          minlength="6"
+        />
+        <div id="newPwdError" class="error-message"></div>
+
+        <div
+          id="toggleNew"
+          class="toggle-visibility"
+          tabindex="0"
+          aria-label="Mostrar/ocultar contraseña"
+        >
+          <!-- ojo abierto -->
+          <svg
+            class="eye-open"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+
+          <!-- ojo cerrado -->
+          <svg
+            class="eye-closed"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17.94 17.94A10 10 0 0 1 6.06 6.06" />
+            <path d="M1 1l22 22" />
+            <path d="M10.58 10.58a3 3 0 0 0 4.24 4.24" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div class="password-wrapper">
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirmar contraseña"
+          required
+          minlength="6"
+        />
+        <div id="confPwdError" class="error-message"></div>
+
+        <div
+          id="toggleConfirm"
+          class="toggle-visibility"
+          tabindex="0"
+          aria-label="Mostrar/ocultar contraseña"
+        >
+          <!-- ojo abierto -->
+          <svg
+            class="eye-open"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+
+          <!-- ojo cerrado -->
+          <svg
+            class="eye-closed"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17.94 17.94A10 10 0 0 1 6.06 6.06" />
+            <path d="M1 1l22 22" />
+            <path d="M10.58 10.58a3 3 0 0 0 4.24 4.24" />
+          </svg>
+        </div>
+      </div>
+
       <button type="submit">Cambiar contraseña</button>
     </form>
+
     <div id="message" class="message"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Solo la lógica de mostrar/ocultar -->
   <script>
-    const supabaseUrl = 'https://digusrmzvsiyewvbiwth.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    // Referencias
+    const newPwd    = document.getElementById("newPassword");
+    const confPwd   = document.getElementById("confirmPassword");
+    const toggleNew = document.getElementById("toggleNew");
+    const toggleConf= document.getElementById("toggleConfirm");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const access_token = urlParams.get('access_token');
+    // Función que alterna tipo y clase para el icono
+    function toggleVis(input, toggle) {
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      toggle.classList.toggle("password-visible", show);
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
 
-    const form = document.getElementById('resetForm');
-    const messageBox = document.getElementById('message');
+    // Listeners para click y teclado
+    toggleNew.addEventListener("click", () => toggleVis(newPwd, toggleNew));
+    toggleNew.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleVis(newPwd, toggleNew);
+      }
+    });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const newPassword = document.getElementById('newPassword').value;
-
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword
-      }, { accessToken: access_token });
-
-      if (error) {
-        messageBox.textContent = 'Error: ' + error.message;
-        messageBox.style.color = '#e63946';
-      } else {
-        messageBox.style.color = '#2a9d8f';
-        messageBox.textContent = 'Contraseña actualizada correctamente. Redirigiendo...';
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
+    toggleConf.addEventListener("click", () => toggleVis(confPwd, toggleConf));
+    toggleConf.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleVis(confPwd, toggleConf);
       }
     });
   </script>
+
+<script src="app.js"></script>
 </body>
 </html>
