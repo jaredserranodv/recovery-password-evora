@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Restablecer Contraseña</title>
+</head>
+<body>
+  <h1>Restablecer Contraseña</h1>
+  <form id="resetForm">
+    <input type="password" id="newPassword" placeholder="Nueva contraseña" required />
+    <button type="submit">Cambiar contraseña</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Inicializa Supabase
+    const supabaseUrl = 'https://digusrmzvsiyewvbiwth.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZ3Vzcm16dnNpeWV3dmJpd3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzODYyODQsImV4cCI6MjA2NTk2MjI4NH0.5ew8mHnyEEHnVrQY6Yz31BQstQcc_YCude2dCBWrwRU';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Obtén el token de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const access_token = urlParams.get('access_token');
+
+    const form = document.getElementById('resetForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newPassword = document.getElementById('newPassword').value;
+
+      // Actualiza la contraseña usando el token
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword
+      }, { accessToken: access_token });
+
+      if (error) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Contraseña actualizada correctamente.');
+        // Redirigir a login o home
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>
