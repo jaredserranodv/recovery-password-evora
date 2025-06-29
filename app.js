@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const SUPABASE_URL = "https://digusrmzvsiyewvbiwth.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // puedes dejarlo como lo tenías
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZ3Vzcm16dnNpeWV3dmJpd3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzODYyODQsImV4cCI6MjA2NTk2MjI4NH0.5ew8mHnyEEHnVrQY6Yz31BQstQcc_YCude2dCBWrwRU"; 
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const form = document.getElementById("resetForm");
@@ -17,18 +17,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   function showInlineError(el, msg) {
     el.textContent = msg;
   }
-
   function clearInlineErrors() {
     errNew.textContent = "";
     errConf.textContent = "";
   }
-
   function showMessage(text, isError = true) {
     messageBox.textContent = text;
     messageBox.style.color = isError ? "#e63946" : "#2a9d8f";
   }
 
-  // 1. Intercambiar código por sesión
   if (!code) {
     showMessage("Código de verificación ausente o inválido.");
     form.style.display = "none";
@@ -43,27 +40,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // 2. Escuchar envío del formulario
   form.addEventListener("submit", async e => {
     e.preventDefault();
     clearInlineErrors();
-    showMessage("");  // Puedes quitar esta línea si quieres solo usar SweetAlert
-  
+    showMessage("");
+
     const pwd = newPwd.value.trim();
     const confirm = confPwd.value.trim();
-  
+
     if (pwd.length < 6) {
       showInlineError(errNew, "La contraseña debe tener al menos 6 caracteres.");
       newPwd.focus();
       return;
     }
-  
     if (pwd !== confirm) {
       showInlineError(errConf, "La confirmación no coincide.");
       confPwd.focus();
       return;
     }
   
+  
+    // En lugar de showMessage, pon esto:
+
     // En lugar de showMessage, pon esto:
     Swal.fire({
       title: 'Actualizando contraseña...',
@@ -73,11 +71,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       allowOutsideClick: false,
       allowEscapeKey: false,
     });
-  
+
     const { error } = await supabase.auth.updateUser({ password: pwd });
-  
-    Swal.close(); // cierra el loading
-  
+
+    Swal.close();
+
     if (error) {
       console.error(error);
       Swal.fire({
@@ -96,5 +94,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
   });
-  
 });
