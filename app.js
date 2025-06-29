@@ -47,34 +47,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   form.addEventListener("submit", async e => {
     e.preventDefault();
     clearInlineErrors();
-    showMessage("");
-
+    showMessage("");  // Puedes quitar esta línea si quieres solo usar SweetAlert
+  
     const pwd = newPwd.value.trim();
     const confirm = confPwd.value.trim();
-
+  
     if (pwd.length < 6) {
       showInlineError(errNew, "La contraseña debe tener al menos 6 caracteres.");
       newPwd.focus();
       return;
     }
-
+  
     if (pwd !== confirm) {
       showInlineError(errConf, "La confirmación no coincide.");
       confPwd.focus();
       return;
     }
-
-    showMessage("Actualizando contraseña...", false);
+  
+    // En lugar de showMessage, pon esto:
+    Swal.fire({
+      title: 'Actualizando contraseña...',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+  
     const { error } = await supabase.auth.updateUser({ password: pwd });
-
+  
+    Swal.close(); // cierra el loading
+  
     if (error) {
       console.error(error);
-      showMessage("Error al actualizar contraseña: " + error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al actualizar contraseña: ' + error.message,
+      });
     } else {
-      showMessage("Contraseña actualizada correctamente. Redirigiendo...", false);
-      setTimeout(() => {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Contraseña actualizada!',
+        text: 'Tu contraseña fue cambiada correctamente.',
+        confirmButtonText: 'Aceptar',
+      }).then(() => {
         window.location.href = "/";
-      }, 2000);
+      });
     }
   });
+  
 });
